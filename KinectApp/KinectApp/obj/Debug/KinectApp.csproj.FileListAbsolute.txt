@@ -1,0 +1,13 @@
+c:\users\near\documents\visual studio 2017\Projects\KinectApp\KinectApp\bin\Debug\KinectApp.exe.config
+c:\users\near\documents\visual studio 2017\Projects\KinectApp\KinectApp\bin\Debug\KinectApp.exe
+c:\users\near\documents\visual studio 2017\Projects\KinectApp\KinectApp\bin\Debug\KinectApp.pdb
+c:\users\near\documents\visual studio 2017\Projects\KinectApp\KinectApp\bin\Debug\Microsoft.Kinect.dll
+c:\users\near\documents\visual studio 2017\Projects\KinectApp\KinectApp\bin\Debug\Microsoft.Kinect.xml
+c:\users\near\documents\visual studio 2017\Projects\KinectApp\KinectApp\obj\Debug\KinectApp.Properties.Resources.resources
+c:\users\near\documents\visual studio 2017\Projects\KinectApp\KinectApp\obj\Debug\KinectApp.csproj.GenerateResource.Cache
+c:\users\near\documents\visual studio 2017\Projects\KinectApp\KinectApp\obj\Debug\KinectApp.csproj.CoreCompileInputs.cache
+c:\users\near\documents\visual studio 2017\Projects\KinectApp\KinectApp\obj\Debug\KinectApp.exe
+c:\users\near\documents\visual studio 2017\Projects\KinectApp\KinectApp\obj\Debug\KinectApp.pdb
+C:\Users\near\documents\visual studio 2017\Projects\KinectApp\KinectApp\obj\Debug\KinectApp.KinectApp.resources
+C:\Users\near\documents\visual studio 2017\Projects\KinectApp\KinectApp\obj\Debug\KinectApp.csprojResolveAssemblyReference.cache
+C:\Users\near\documents\visual studio 2017\Projects\KinectApp\KinectApp\obj\Debug\KinectApp.csproj.CopyComplete
