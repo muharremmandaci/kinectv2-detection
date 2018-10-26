@@ -25,6 +25,7 @@ namespace KinectApp
 
         private ColorFrameReader colorFrameReader = null;
         private DepthFrameReader depthFrameReader = null;
+        
         private CoordinateMapper coordinateMapper = null;
 
 
@@ -32,16 +33,19 @@ namespace KinectApp
         Image<Gray, Byte> crImage;
         Image<Rgb, Byte> colorImage;
         Image<Gray, Byte> imageToDisplay;
+        
         private byte[] colorPixels;
         private byte[] binaryPixels;
         private ushort[] uDepthPixels;
+        
         private DepthSpacePoint[] mappedDepth;
-
 
         private const int colorWidth = 1920;
         private const int colorHeight = 1080;
+        
         private const int binWidth = 960;
         private const int binHeight = 540;
+        
         private const int depthWidth = 512;
         private const int depthHeight = 424;
 
@@ -53,18 +57,18 @@ namespace KinectApp
         private const byte max = (byte)255;
         private const byte min = (byte)0;
 
-        private int r;
-        private int g;
-        private int b;
+        private int red;
+        private int green;
+        private int blue;
         private double cr;
 
-        //Camera constants
+        //Camera constants !(?)
         private const double alpha_u = 1073.48539;
         private const double alpha_v = 1077.91738;
         private const double u0 = 970.95975;
         private const double v0 = 515.18869;
 
-        //Temporary
+        //Temporary !(kendi pathin ile değiştir)
         string path = @"C:\Users\near\Desktop\PFE\data\Kinect_Presicion";
         string writingLocation = null;
 
@@ -73,6 +77,7 @@ namespace KinectApp
         byte[] outputImage;
 
         int grayLevel = 0;
+        
         MCvFont coordFont;
         MCvFont textFont;
 
@@ -82,21 +87,29 @@ namespace KinectApp
             binary,
             grayscale
         }
+        
         private Image_Modes MODE = Image_Modes.grayscale;
 
         public KinectApp()
         {
             InitializeComponent();
+            
             kinectSensor = KinectSensor.GetDefault();
 
             this.KeyPreview = true;
             this.KeyDown += KinectApp_KeyDown;
 
             var frameDesc = kinectSensor.ColorFrameSource.CreateFrameDescription(ColorImageFormat.Rgba);
+            
+            // ! BytesPerPixel ve LengthInPixels değerlerini incele
             colorPixels = new byte[frameDesc.BytesPerPixel * frameDesc.LengthInPixels];
             binaryPixels = new byte[binHeight * binWidth];
+            
+            // neden ushort?
             uDepthPixels = new ushort[depthHeight * depthWidth];
+            
             mappedDepth = new DepthSpacePoint[colorHeight * colorWidth];
+            
             outputImage = new byte[1920*1080/2];
 
             colorFrameReader = kinectSensor.ColorFrameSource.OpenReader();
@@ -105,6 +118,7 @@ namespace KinectApp
             binImage = new Image<Gray, byte>(binWidth, binHeight);
             crImage = new Image<Gray, byte>(binWidth, binHeight);
             colorImage = new Image<Rgb, byte>(binWidth, binHeight);
+            
             imageToDisplay = new Image<Gray, byte>(binWidth, binHeight);
             imageToDisplay.Ptr = crImage.Ptr;
 
