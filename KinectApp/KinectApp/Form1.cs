@@ -231,7 +231,13 @@ namespace KinectApp
             int pixel_index = 0;
             byte* p = (byte*)binImage.MIplImage.imageData;
             byte* q = (byte*)crImage.MIplImage.imageData;
-
+            
+            /*
+            double my_Y;
+            double my_CR;
+            double my_CB;
+            */
+            
             for (int j = 0; j < colorHeight; j += 2)
             {
                 for (int i = 0; i < colorWidth; i += 2)
@@ -240,8 +246,14 @@ namespace KinectApp
                     green = colorPixels[pixel_index + 1];
                     blue  = colorPixels[pixel_index + 2];
 
-                    cr = 0.5 * red - 0.4187 * green - 0.0813 * blue + 128;
+                    cr = 0.4998 * red - 0.4185 * green - 0.0813 * blue + 128;
                     p[i / 2] = (cr > threshold) ? max : min;
+                    
+                    /*
+                    my_Y = 0.299*red + 0.587*green + 0.114*blue;
+                    my_CR = (red−my_Y)*0.713 + 128;
+                    my_CB = (blue−my_Y)*0.564 + 128;
+                    */
 
                     q[i / 2] = (byte)red;
                     pixel_index += 8;
@@ -256,6 +268,7 @@ namespace KinectApp
             DetectContours();
             imageBox1.Image = imageToDisplay;
         }
+        
         private void DrawText(string text, int x, int y, MCvFont font)
         {
             CvInvoke.cvPutText(imageToDisplay.Ptr,
