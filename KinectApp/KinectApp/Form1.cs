@@ -126,11 +126,12 @@ namespace KinectApp
             this.depthFrameReader = kinectSensor.DepthFrameSource.OpenReader();
 
             this.colorFrameReader.FrameArrived += this.Reader_ColorFrameArrived;
-            this.depthFrameReader.FrameArrived += this.Reader_FrameArrived;
+            this.depthFrameReader.FrameArrived += this.Reader_DepthFrameArrived;
             coordinateMapper = kinectSensor.CoordinateMapper;
 
             coordFont = new MCvFont(FONT.CV_FONT_HERSHEY_DUPLEX, 1, 1);
             textFont = new MCvFont(FONT.CV_FONT_HERSHEY_SIMPLEX, 0.5, 0.5);
+            
             label1.Text = "Threshold: " + threshold.ToString();
 
             try
@@ -147,11 +148,12 @@ namespace KinectApp
             }
             if (!kinectSensor.IsAvailable)
             {
-
                 StatusLabel.ForeColor = Color.Red;
                 StatusLabel.Text = "Kinect not connected";
+                
                 Bitmap bitmap = new Bitmap(Image.FromFile("nosignal.jpg"));
                 Image<Rgb, byte> image = new Image<Rgb, byte>(bitmap);
+                
                 imageBox1.Image = image;
             }
 
@@ -163,10 +165,12 @@ namespace KinectApp
 
         }
 
+        
         private void KinectApp_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.B)
             {
+            //Ptr lerin olayı ne?
                 imageToDisplay.Ptr = binImage.Ptr;
                 grayLevel = 255;
             }
@@ -177,13 +181,13 @@ namespace KinectApp
             }
         }
 
-        private void Reader_FrameArrived(object sender, DepthFrameArrivedEventArgs e)
+        private void Reader_DepthFrameArrived(object sender, DepthFrameArrivedEventArgs e)
         {
             using (DepthFrame depthFrame = e.FrameReference.AcquireFrame())
             {
                 if (depthFrame != null)
                 {
-
+                    // buffer?
                     using (Microsoft.Kinect.KinectBuffer depthBuffer = depthFrame.LockImageBuffer())
                     {
                         depthFrame.CopyFrameDataToArray(uDepthPixels);
@@ -224,42 +228,31 @@ namespace KinectApp
 
         unsafe void ProcessColor()
         {
-            int k = 0;
+            int pixel_index = 0;
             byte* p = (byte*)binImage.MIplImage.imageData;
             byte* q = (byte*)crImage.MIplImage.imageData;
-            byte[,,] data = colorImage.Data;
-
-            int l = 0;
-            int i_r = 0;
-            int j_r = 0;
 
             for (int j = 0; j < colorHeight; j += 2)
             {
                 for (int i = 0; i < colorWidth; i += 2)
                 {
-                    r = colorPixels[k];
-                    g = colorPixels[k + 1];
-                    b = colorPixels[k + 2];
-                    /*
-                    data[j_r, i_r, 0] = colorPixels[k];
-                    data[j_r, i_r, 1] = colorPixels[k + 1];
-                    data[j_r, i_r, 2] = colorPixels[k + 2];
-                    */
-                    cr = 0.5 * r - 0.4187 * g - 0.0813 * b + 128;
+                    red   = colorPixels[pixel_index];
+                    green = colorPixels[pixel_index + 1];
+                    blue  = colorPixels[pixel_index + 2];
+
+                    cr = 0.5 * red - 0.4187 * green - 0.0813 * blue + 128;
                     p[i / 2] = (cr > threshold) ? max : min;
-  //                  p[i / 2] = outputImage[l];
-                    l++;
-                    q[i / 2] = (byte)r;
-                    k += 8;
-                    i_r++;
+
+                    q[i / 2] = (byte)red;
+                    pixel_index += 8;
                 }
-                j_r++;
-                i_r = 0;
+                
+                // alt satıra geçiyor
                 p += binWidth;
                 q += binWidth;
-                k += colorWidth * 4;
+                pixel_index += colorWidth * 4;
             }
-            //            CvInvoke.cvThreshold(binImage.Ptr, binImage.Ptr, threshold, 255, THRESH.CV_THRESH_BINARY);
+
             DetectContours();
             imageBox1.Image = imageToDisplay;
         }
